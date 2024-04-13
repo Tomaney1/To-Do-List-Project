@@ -1,11 +1,11 @@
 <?php
-      session_start();
+
+    session_start();
+
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 
     require 'connection.php';
-
-    // Initialize session
 
 
     // Add task
@@ -13,7 +13,8 @@
         $taskName = $_POST['task_name'];
         $priority = $_POST['priority'];
         $progress = $_POST['progress'];
-        $userId = $_SESSION['user_id']; // Retrieve user ID from session
+        $userId = $_SESSION['user_id'];
+
 
     // Insert task into database
     $sql_add_task = "INSERT INTO tasks (user_id, task_name, priority, progress) VALUES ('$userId', '$taskName', '$priority', '$progress')";
@@ -45,8 +46,8 @@
     if (isset($_POST['edit_task']) && isset($_POST['task_id']) && isset($_POST['task_name'])) {
         $taskId = $_POST['task_id'];
         $taskName = $_POST['task_name'];
-        $priority = $_POST['priority']; // Added line
-        $progress = $_POST['progress']; // Added line
+        $priority = $_POST['priority']; 
+        $progress = $_POST['progress']; 
         
         // Update task in database
         $sql_edit_task = "UPDATE tasks SET task_name='$taskName', priority='$priority', progress='$progress' WHERE id=$taskId";
@@ -69,6 +70,8 @@
             $tasks[] = $row;
         }
     }
+
+
 
     $conn->close(); // Close the database connection
 ?>
@@ -112,14 +115,23 @@
 <body>
 
     <div class="header">
-        <h1>To do list</h1>
+        <ul>
+            <li style="padding: 0;"><h1>To do list</h1></li>
+            <div class="container">             
+                <li class="calendar"><a href='index.php'><img src="calendar_2.jpeg"></a></li>
+                <li class="logout"> 
+                    <a href='logout.php'><img src="logout_2.png"></a>
+                </li>   
+            </div>         
+        </ul>        
     </div>
 
+
     <div id="todo-list">
-        <h2>Welcome, User!</h2>
+        <h2>Task List</h2>
         <form method="post">
             <input type="text" name="task_name" placeholder="Enter task">
-            <select name="priority" id="prioritySelect">
+            <select name="priority" id="prioritySelect">               
                 <option value="low">Priority...</option>
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -132,35 +144,43 @@
                 <option value="Done">Complete</option>
             </select>
             <button id="task-button" type="submit" name="add_task">Add Task</button>
+
         </form>
-
-        <ul id="task-list">
+        <div class="elements">
+        <ul>
             <?php foreach ($tasks as $task): ?>
-                <li class="task-item">
-                    <span><?php echo $task['task_name']; ?></span>
+                <li>
+                    
                     <button class="edit-btn" onclick="editTask(<?php echo $task['id']; ?>)"></button>
-                    <a class="delete-btn" href="?delete=<?php echo $task['id']; ?>"></a>
-                    <!-- Display priority -->
-                    <select name="priority" id="prioritySelect">
-                        <option value="low" <?php if ($task['priority'] == 'low') echo 'selected'; ?>>Low</option>
-                        <option value="medium" <?php if ($task['priority'] == 'medium') echo 'selected'; ?>>Medium</option>
-                        <option value="high" <?php if ($task['priority'] == 'high') echo 'selected'; ?>>High</option>
-                    </select>
-                    <!-- Display progress -->
-                    <select name="progress" id="progressionSelect">
-                        <option value="not begun" <?php if ($task['progress'] == 'not begun') echo 'selected'; ?>>Not Started</option>
-                        <option value="inProgress" <?php if ($task['progress'] == 'inProgress') echo 'selected'; ?>>In Progress</option>
-                        <option value="Done" <?php if ($task['progress'] == 'Done' || $task['progress'] == 'done' || $task['progress'] == 'Complete' || $task['progress'] == 'complete') echo 'selected'; ?>>Complete</option>
-                    </select>
-
+                    <a class="delete-btn" href="?delete=<?php echo $task['id']; ?>"></a>            
+                    <span><?php echo $task['task_name']; ?></span>
+                    
+                        <!-- Display priority -->
+                        <?php 
+                            if($task['priority'] == 'low') {
+                                echo "<h6 id='low'>Low</h6>";
+                            } elseif($task['priority'] == 'medium') {
+                                echo "<h6 id='medium'>Medium</h6>";
+                            } elseif($task['priority'] == 'high') {
+                                echo "<h6 id='high'>High</h6>";
+                            }
+                        ?>
+                        <!-- Display progress -->
+                        <?php 
+                            if($task['progress'] == 'notBegun' || $task['progress'] == 'not started' || $task['progress'] == 'not begun') {
+                                echo "<h6 id='not_started'>Not Started</h6>";
+                            } elseif($task['progress'] == 'In progress' || $task['progress'] == 'in progress' || $task['progress'] == 'inProgress') {
+                                echo "<h6 id='in_progress'>In Progress</h6>";
+                            } elseif($task['progress'] == 'Done' || $task['progress'] == 'done' || $task['progress'] == 'finished' || $task['progress'] == 'Finished') {
+                                echo "<h6 id='done'>Complete</h6>";
+                            }
+                        ?>
+                
                 </li>
             <?php endforeach; ?>
+
      
         </ul>
-        <!-- Add logout form -->
-        <form action="logout.php" method="POST">
-            <button type="submit" name="logout">Logout</button>
-        </form>
     </div>
 </body>
 </html>
