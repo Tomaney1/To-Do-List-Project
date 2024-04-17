@@ -73,7 +73,9 @@
 
 
 
+
     $conn->close(); // Close the database connection
+
 ?>
 
 <!DOCTYPE html>
@@ -111,6 +113,38 @@
             }
         }
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var sendTaskButtons = document.querySelectorAll(".send-task-btn");
+        sendTaskButtons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var taskId = this.getAttribute("data-task-id");
+                var recipientUserId = this.parentNode.querySelector(".recipient-dropdown").value;
+
+                // Send AJAX request to send_task.php
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            // Task sent successfully, show pop-up message
+                            alert("Task sent successfully!");
+                            window.location.reload(); // Reload the page after the task is sent
+                        } else {
+                            // Handle error
+                            console.error("Error sending task:", xhr.responseText);
+                        }
+                    }
+                };
+                xhr.open("POST", "send_task.php", true); // Update the URL here
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send("task_id=" + taskId + "&recipient_user_id=" + recipientUserId);
+            });
+        });
+    });
+</script>
+
+
 </head>
 <body>
 
@@ -118,10 +152,10 @@
         <ul>
             <li style="padding: 0;"><h1>To do list</h1></li>
             <div class="container">             
-                <li class="calendar"><a href='index.php'><img src="calendar_2.jpeg"></a></li>
-                <li class="logout"> 
-                    <a href='logout.php'><img src="logout_2.png"></a>
-                </li>   
+            <li class="calendar"><a href='index.php'><img src="calendar_2.jpeg"></a></li>
+            <li class="logout"> 
+                <a href='logout.php'><img src="logout_2.png"></a>
+            </li>   
             </div>         
         </ul>        
     </div>
@@ -152,7 +186,23 @@
                 <li>
                     
                     <button class="edit-btn" onclick="editTask(<?php echo $task['id']; ?>)"></button>
-                    <a class="delete-btn" href="?delete=<?php echo $task['id']; ?>"></a>            
+                    <a class="delete-btn" href="?delete=<?php echo $task['id']; ?>"></a>    
+
+                    <div class="task-actions">
+                        <!-- Dropdown menu for selecting recipient user -->
+                        <select class="recipient-dropdown">
+                            <option value="recipient">Choose Recipient...</option>
+                            <!-- Populate with users from your database -->
+                            <?php foreach ($users as $user): ?>
+                                <!-- exclude the current user from the dropdown -->
+                                <?php if ($user['user_id'] !== $_SESSION['user_id']): ?>
+                                    <option value="<?php echo $user['user_id']; ?>"><?php echo $user['username']; ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                        <button id="task-button" class="send-task-btn" data-task-id="<?php echo $task['id']; ?>">Send Task</button>
+                    </div>   
+
                     <span><?php echo $task['task_name']; ?></span>
                     
                         <!-- Display priority -->
