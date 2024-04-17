@@ -2,7 +2,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
-    background-color: #f9f9f9; /* Light gray background */
+    background-color: #d2ddd0; /* Light gray background */
     margin: 0px;
 }
 
@@ -12,11 +12,15 @@ h1{
     border-radius: 5px;
  }
 
+ span {
+    position: relative;
+    bottom: 15px;
+    left: 2px;
+}
+
 .header {
     padding: 5px;
     text-align: left;
-    background-image: url(banner2.jpeg);
-    background-repeat: repeat-x;
     color: white;
     font-size: 15px;
 }
@@ -31,6 +35,20 @@ h1{
 }
 
 
+/* Define the animation */
+@keyframes buttonHoverAnimation {
+    0% {
+        transform: scale(1); /* Initial scale */
+    }
+    50% {
+        transform: scale(1.1); /* Scale to 110% halfway through */
+    }
+    100% {
+        transform: scale(1); /* Return to original scale */
+    }
+}
+
+/* Apply the animation to the button on hover */
 #task-button {
     padding: 10px 20px;
     background-color: #859683;
@@ -38,8 +56,14 @@ h1{
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s; /* Smooth hover transition */
+    transition: background-color 0.3s, transform 0.3s;
 }
+
+#task-button:hover {
+    background-color: #6b7b72; /* Darker color on hover */
+    animation: buttonHoverAnimation 0.5s ease-in-out; /* Apply animation */
+}
+
 input[type="text"] {
     width: calc(100% - 60px);
     padding: 10px;
@@ -65,7 +89,7 @@ input[type="text"] {
     padding: 10px 20px;
     width: 70px;
     height: 15px;
-    bottom: 5px;
+    bottom: 20px;
 }
 
 #medium {
@@ -78,7 +102,7 @@ input[type="text"] {
     padding: 10px 20px;
     width: 70px;
     height: 15px;
-    bottom: 5px;
+    bottom: 20px;
 }
 
 #high {
@@ -91,46 +115,46 @@ input[type="text"] {
     padding: 10px 20px;
     width: 70px;
     height: 15px;
-    bottom: 5px;
+    bottom: 20px;
 }
 
 #in_progress {
     position: absolute;
     margin: auto;
     text-align: center;
-    left: 450px; 
+    left: 370px; 
     color: #fff;
     background-color: #abcdd5;
     padding: 10px 20px;
     width: 70px;
     height: 15px;
-    bottom: 5px;
+    bottom: 20px;
 }
 
 #not_started {
     position: absolute;
     margin: auto;
     text-align: center;
-    left: 450px;  
+    left: 370px;  
     color: #fff;
     background-color: #AEB3B3;
     padding: 10px 20px;
     width: 70px;
     height: 15px;
-    bottom: 5px;
+    bottom: 20px;
 }
 
 #done {
     position: absolute;
     margin: auto;
     text-align: center;
-    left: 450px;  
+    left: 370px;  
     color: #fff;
     background-color: #94a691;
     padding: 10px 20px;
     width: 70px;
     height: 15px;
-    bottom: 5px;
+    bottom: 20px;
 }
 
 .container {
@@ -164,6 +188,12 @@ input[type="text"] {
     bottom: 93px;
     right: 29px;
     box-shadow: none;
+}
+
+.task-actions {
+    position: relative;
+    left: 490px;
+    top: 10px;
 }
 
 /* Edit and Delete buttons */
@@ -234,44 +264,6 @@ select {
 
 select:hover {
     background-color: #5f6e5d;
-}
-
-
-
-checkbox {
-    position: absolute; 
-    left: 0; /* Adjusted left position for the checkbox */
-    top: 45%;
-    transform: translateY(-50%);
-    appearance: none; /* Remove default checkbox appearance */
-    width: 20px; /* Set width of checkbox */
-    height: 20px; /* Set height of checkbox */
-    background-color: #fff; /* Background color of checkbox */
-    border: 1px solid #ccc; /* Border of checkbox */
-    border-radius: 3px; /* Border radius of checkbox */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    margin-right: 10px; /* Add margin to separate checkbox from task text */
-}
-
-checkbox:checked {
-    background-color: #859683; /* Background color when checkbox is checked */
-}
-checkbox:checked:after {
-   
-    content: ''; /* Empty content */
-    display: block;
-    width: 5px; /* Width of the checkmark */
-    height: 10px; /* Height of the checkmark */
-    border: solid #fff; /* Border style for the checkmark */
-    border-width: 0 3px 3px 0; /* Adjust thickness and angle of the checkmark */
-    transform: rotate(45deg); /* Rotate the checkmark to form a tick */
-    margin-left: 2px;/* Adjust positioning of the checkmark */  
-    opacity: 1; /* Show checkmark when checkbox is checked */
-    transition: opacity 0.3s; /* Transition for checkmark */
-}
-
-checkbox:checked:after {
-    opacity: 1; /* Show checkmark when checkbox is checked */
 }
 
 .task-text {
