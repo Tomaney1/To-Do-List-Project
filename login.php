@@ -53,7 +53,8 @@ if(isset($_POST['signup'])){
     $insert_user_query = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
     if(mysqli_query($conn, $insert_user_query)){
 
-        echo "User registered successfully!";
+        // Add JavaScript code to show popup after successful signup
+        echo '<script>alert("User registered successfully!");</script>';
     } else {
         echo "Error: " . $insert_user_query . "<br>" . mysqli_error($conn);
     }
@@ -65,13 +66,18 @@ if(isset($_POST['signup'])){
 <head>
     <link rel="stylesheet" href="styles.css">
     <title>To-do List</title>
+      <script>
+        function showPopup(message) {
+            alert(message);
+        }
+    </script>
 </head>
 <body>
     <div class="loginform">
         <img src="todolist.jpg" alt="ToDoListPhoto" class="forphoto">
         <form action="login.php" method="POST">
             <br>
-            <input type="text" name="username" placeholder="Email" style="display:block; margin : 0 auto;" value ="
+            <input type="text" name="username" placeholder="Username" style="display:block; margin : 0 auto;" value ="
                 <?php
                     if(isset($_SESSION['username'])){
                         echo $_SESSION['username'];
