@@ -1,0 +1,24 @@
+body {
+    background-color: aqua;
+}
+
+.forphoto {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border-radius: 8px;
+}
+
+.loginform {
+    margin: auto;
+    width: 50%;
+    border: 3px solid grey;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: azure;
+}
+
+.buttonsCenter {
+    text-align: center;
+}
